@@ -1,0 +1,13 @@
+{
+    "short_name": "CICBOMB",
+    "name": "CICBOMB",
+    "icons": [
+        {
+            "src": "./img/fav.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        }
+    ],
+    "theme_color": "#ffbc57",
+    "display": "fullscreen"
+}

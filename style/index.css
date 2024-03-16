@@ -1,0 +1,212 @@
+@import url("https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Russo+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+
+/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+:root {
+  --n_col: 10;
+}
+
+/*************************************************
+      RESET
+   *************************************************/
+ul,
+ol,
+menu {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+img {
+  max-width: 100%;
+}
+
+h1,
+.h1 {
+  font-size: 1.2rem;
+}
+
+p {
+  font-size: 0.7rem;
+}
+.form-select {
+  font-size: 0.7rem;
+}
+
+/************************************************
+      UTILITIES
+   ************************************************/
+.d-contents {
+  display: contents;
+}
+/*************************************************
+    GENERAL STYLES
+ *************************************************/
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-image: url(../img/bk.png);
+  background-size: cover;
+  color: rgb(95, 95, 95);
+}
+
+/* HEADER */
+header {
+  font-family: "Russo One", sans-serif;
+  height: 100px;
+  background-color: rgba(255, 188, 87, 0.7);
+}
+header img {
+  width: 3em;
+}
+
+#header_score {
+  font-family: "Black Ops One", system-ui;
+  font-size: 2rem;
+  padding: 0 4px;
+  padding-top: 4px;
+  line-height: 1em;
+  background-color: #fff;
+  border-radius: 0.3rem;
+  display: inline-block;
+}
+
+.header_flag {
+  width: 30px;
+  padding: 0;
+  background-color: transparent;
+  border-radius: 0.3rem;
+  display: block;
+  margin: 0 auto;
+  margin-top: 5px;
+  border: 1px solid #ffffff;
+}
+
+#header_flag:checked+label{
+  background-color: #52abff;
+  border: 0;
+}
+
+/* MAIN */
+#field_box {
+  background-color: #ffbc57;
+  border: 1px solid #ffffff;
+  width: calc(100vmin - 70px);
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  border-radius: 5px;
+}
+.btn-square {
+  background-color: #ffbc57;
+  width: calc(100% / var(--n_col));
+  max-width: calc(100% / var(--n_col));
+  aspect-ratio: 1 / 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ffffff;
+  border-radius: 5px;
+  cursor: pointer;
+  user-select: none;
+  color: #ffbc57;
+}
+.btn-square:hover {
+  color: #bbbbbb;
+  border: 1px solid #bbbbbb;
+}
+
+.empty-box {
+  background-color: #5271FF !important;
+}
+
+.bomb {
+  background-color: #85060675;
+  background-image: url(../img/bomba.png);
+  background-size: cover;
+}
+.bomb.flag {
+  background-color: #06850675;
+  background-image: url(../img/bomba.png);
+  background-size: cover;
+}
+.bomb-esp {
+  background-color: #850606 !important;
+  background-image: url(../img/bomba_esp.png) !important;
+  background-size: cover;
+}
+
+.flag {
+  background-color: #52abff;
+  background-image: url(../img/flag.png);
+  background-size: cover;
+}
+
+.ms_modal {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  vertical-align: middle;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.ms_modal-box {
+  border-radius: 1em;
+  border: 2px solid rgba(158, 21, 21, 0.6);
+  background-color: rgba(255, 255, 255, 0.6);
+}
+.ms_modal-box.ms_win {
+  border: 2px solid rgba(21, 158, 39, 0.6);
+  color: rgba(21, 158, 39);
+}
+.ms_modal-box h1 {
+  font-family: "Black Ops One", system-ui;
+}
+.ms_modal-box p {
+  color: black;
+  font-weight: bolder;
+}
+
+/* FOOTER */
+footer {
+  height: 70px;
+}
+footer p {
+  display: inline-block;
+  background-color: #ffbc57;
+  border-radius: 0 10px 10px 0;
+  border: 2px solid #fff;
+  border-left: 0;
+}
+
+/*************************************************
+    MEDIA RESPONSIVE
+ *************************************************/
+/* breakpoints Medium*/
+@media (min-width: 768px) {
+  h1,
+  .h1 {
+    font-size: 1.7rem;
+  }
+  p {
+    font-size: initial;
+  }
+  .form-select {
+    font-size: initial;
+  }
+  #field_box {
+    width: calc(100vmin - 130px);
+  }
+}
+/* breakpoints Large*/
+@media (min-width: 992px) {
+  #field_box {
+    width: calc(100vmin - 170px);
+  }
+}

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- favicon -->
+    <link rel="icon" href="./img/fav.png" type="image/png"/>
+    <!-- manifest -->
+    <link rel="manifest" href="site.webmanifest" />
+    <!-- style -->
+    <link rel="stylesheet" href="./style/bootstrap.css">
+    <link rel="stylesheet" href="./style/index.css">
+    <title>CICBOMB</title>
+</head>
+
+<body class="d-flex flex-column vh-100">
+    <header class="p-2">
+        <nav class="h-100 d-flex align-items-center">
+            <img class="me-2" src="./img/logo.png" alt="logo">
+            <div class="col">
+                <h1 class="mb-0">Campo minato</h1>
+            </div>
+
+            <div class="col text-center" style="flex-grow: 2;">
+                <p id="header_score" class="mb-0">00</p>
+                <input class="d-none" id="header_flag" type="checkbox">
+                <label class="header_flag" for="header_flag">
+                    <img src="./img/flag.png">
+                </label>
+
+            </div>
+
+            <div class="col text-end">
+                <p class="mb-0 d-inline-block ">Difficolta:</p>
+                <span class="d-inline-block">
+                    <select class="form-select" id="rank">
+                        <option selected value="0">Facile</option>
+                        <option value="1">Normale</option>
+                        <option value="2">Difficile</option>
+                    </select>
+                </span>
+            </div>
+
+            <div class="col-auto ms-2">
+                <button type="button" id="generate" class="btn btn-outline-danger material-symbols-outlined p-1">
+                    refresh
+                </button>
+            </div>
+
+        </nav>
+    </header>
+
+    <main class="flex-grow-1">
+        <section class="field h-100 p-3 p-md-5">
+            <div id="field_box">
+            </div>
+
+        </section>
+    </main>
+
+    <footer>
+        <p class="p-3">Made white &hearts; Antonino Cicala</p>
+
+    </footer>
+
+    <script src="./js/script.js"></script>
+</body>
+
+</html>
