@@ -88,6 +88,11 @@ header img {
 }
 
 /* MAIN */
+.field{
+  display: flex;
+  align-items: center;
+}
+
 #field_box {
   background-color: #ffbc57;
   border: 1px solid #ffffff;
