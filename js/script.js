@@ -1,22 +1,28 @@
+// Inizializzo variabili del DOM
+// header
 const header_score = document.getElementById("header_score");
 const header_flag = document.getElementById("header_flag");
 const rank = document.getElementById("rank");
-const generate = document.getElementById("generate");
+const reload = document.getElementById("reload");
+// main
 const field_box = document.getElementById("field_box");
-let btnSquare;
+let btnSquare; // diventera un array di elementi che saranno le varie caselle cliccabili del gioco
 
-let tabsRank = [10, 9, 7];
-let bombs;
-let state;
+// Inizializzo e dichiaro variabili utili
+let tabsRank = [10, 9, 7]; // difficolta per ogni livello
+let bombs; // verra assegnato un array di bombe
+let state; // stato di gioco ? in gioco : end game
 
-let tab = [];
+let tab = []; // sara una matrice contenente lo schema di  gioco
 
-let ListBoxClicked = [];
-let ListBoxToAutoCheck = [];
+let ListBoxClicked = []; // lista box cliccati
+let ListBoxToAutoCheck = []; // lista box non cliccati ma che vengono controllati se hanno vicino un box vuoto
 
+// %-%-%-%-%-% AZIONE AVVIO %-%-%-%-%-%
+// genera automaticamente il campo di gioco all'avvo della pg con difficolta "0" === Facile
 generateTabStart(0);
 
-generate.addEventListener("click", () => {
+reload.addEventListener("click", () => {
   generateTabStart(rank.value);
 });
 
@@ -24,15 +30,16 @@ rank.addEventListener("change", () => {
   generateTabStart(rank.value);
 });
 
+// Main function che genera il campo di gioco e lo mostra
 function generateTabStart(difficulty) {
-  // svuoto la tab
+  // svuoto la matrice contenente lo schema di  gioco
   tab = [];
 
   // svuoto le liste di box click ed autoclick
   ListBoxClicked = [];
   ListBoxToAutoCheck = [];
 
-  // azzero il cintatore
+  // azzero il contatore del punteggio
   header_score.textContent = getScoreString();
 
   // svuoto il box
@@ -46,8 +53,8 @@ function generateTabStart(difficulty) {
   // Creo le bombe
   bombs = getBombs(13, tabsRank[difficulty] * tabsRank[difficulty]);
 
-  // creo la matrice di gioco
-  createRawTab(tabsRank[difficulty]);
+  // creo la matrice di gioco grezza senza indicazione di bombe vicine
+  tab = createRawTab(tabsRank[difficulty]);
 
   // assegno i numeri che corrispondono alla somma
   // delle bombe vicine
@@ -56,12 +63,14 @@ function generateTabStart(difficulty) {
   // creo la tab di gioco
   createGameTab(tab);
 
+  // assegno gli elementi box cliccabili alla sua variabile
   btnSquare = document.getElementsByClassName("btn-square");
 }
 
+// crea un array di array che contiene lo schema di gioco
 function createRawTab(n = 10) {
-  // field_box.style.setProperty("--n_col", String(n));
   let i = 0;
+  let newTab = [];
   for (let y = 0; y < n; y++) {
     let row = [];
     for (let x = 0; x < n; x++) {
@@ -72,8 +81,9 @@ function createRawTab(n = 10) {
       }
       i++;
     }
-    tab.push(row);
+    newTab.push(row);
   }
+  return newTab;
 }
 
 // posizioni numeri
@@ -84,6 +94,7 @@ function createRawTab(n = 10) {
 // -------------
 // | 7 | 8 | 9 |
 // _____________
+// controlla tutta la matrice per assegnare i numeri vicini alle bombe
 function parseTab(tab) {
   for (let y = 0; y < tab.length; y++) {
     for (let x = 0; x < tab[y].length; x++) {
@@ -91,25 +102,25 @@ function parseTab(tab) {
       if (tab[y][x] !== "b") {
         // controllo riga di sopra
         // controllo posizione numero 1
-        if (checkBomb(y - 1, x - 1, tab)) n++;
+        if (isBomb(y - 1, x - 1, tab)) n++;
         // controllo posizione numero 2
-        if (checkBomb(y - 1, x, tab)) n++;
+        if (isBomb(y - 1, x, tab)) n++;
         // controllo posizione numero 3
-        if (checkBomb(y - 1, x + 1, tab)) n++;
+        if (isBomb(y - 1, x + 1, tab)) n++;
 
         // controllo riga attuale
         // controllo posizione numero 4
-        if (checkBomb(y, x - 1, tab)) n++;
+        if (isBomb(y, x - 1, tab)) n++;
         // controllo posizione numero 6
-        if (checkBomb(y, x + 1, tab)) n++;
+        if (isBomb(y, x + 1, tab)) n++;
 
         // controllo riga successiva
         // controllo posizione numero 7
-        if (checkBomb(y + 1, x - 1, tab)) n++;
+        if (isBomb(y + 1, x - 1, tab)) n++;
         // controllo posizione numero 8
-        if (checkBomb(y + 1, x, tab)) n++;
+        if (isBomb(y + 1, x, tab)) n++;
         // controllo posizione numero 9
-        if (checkBomb(y + 1, x + 1, tab)) n++;
+        if (isBomb(y + 1, x + 1, tab)) n++;
 
         if (n === 0) n = "-";
       }
@@ -120,7 +131,8 @@ function parseTab(tab) {
   return tab;
 }
 
-function checkBomb(y, x, tab) {
+// controlla se in quella posizione cé una bomba
+function isBomb(y, x, tab) {
   const max = tab.length;
   if (x >= 0 && y >= 0 && x < max && y < max) {
     if (tab[y][x] === "b") {
@@ -132,6 +144,7 @@ function checkBomb(y, x, tab) {
 }
 
 // secondary important function
+// mostra la il campo di gioco e gestisce i click sui box
 function createGameTab(tab) {
   field_box.style.setProperty("--n_col", String(tab.length));
   for (const y in tab) {
@@ -147,7 +160,6 @@ function createGameTab(tab) {
             header_flag.checked = false;
           } else if (state) {
             btnSquare.classList.add("bomb-esp");
-            state = false;
             showBombs(bombs);
             gameOver(ListBoxClicked.length);
           }
@@ -185,6 +197,7 @@ function createGameTab(tab) {
   }
 }
 
+// crea un array di bombe
 function getBombs(quantity, maxVal) {
   let b = [];
   while (b.length < quantity) {
@@ -199,12 +212,14 @@ function getBombs(quantity, maxVal) {
   return b;
 }
 
+// mostra le bombe in gioco
 function showBombs(bombs) {
   for (let index = 0; index < bombs.length; index++) {
     btnSquare[bombs[index]].classList.add("bomb");
   }
 }
 
+// mostra tutte le caselle vuote vicino alla casella cliccata
 function showAllColseBox(yx, tab) {
   setTimeout(() => {
     const y = yx[0];
@@ -224,13 +239,16 @@ function showAllColseBox(yx, tab) {
 
     ListBoxToAutoCheck.shift();
 
+    header_score.textContent = getScoreString();
+
+    // se trova altre caselle vicine vuote si riavvia
     if (ListBoxToAutoCheck.length > 0) {
       showAllColseBox(ListBoxToAutoCheck[0], tab);
     }
-    header_score.textContent = getScoreString();
   }, 20);
 }
 
+// mostra casella vicina e controlla se sono caselle vuote per salvarle e controllarle al prossimo giro
 function showColseBox(y, x, tab) {
   const max = tab.length;
   if (x >= 0 && y >= 0 && x < max && y < max) {
@@ -255,11 +273,15 @@ function showColseBox(y, x, tab) {
     }
   }
 }
+
+// ritorna index dell' array di elementi box cliccabili
 function getIndexFromXY(y, x, tab) {
   return Number(y) * tab.length + Number(x);
 }
 
+// modale che spunta nel caso perdi 
 function gameOver(score) {
+  state = false;
   const modal = document.createElement("div");
   modal.classList.add("ms_modal");
   modal.innerHTML = `
@@ -270,6 +292,8 @@ function gameOver(score) {
   `;
   field_box.appendChild(modal);
 }
+
+// modale che spunta nel caso vinci
 function checkWin(score, maxScore) {
   if (score === maxScore) {
     state = false;
@@ -285,11 +309,13 @@ function checkWin(score, maxScore) {
   }
 }
 
+// genera un numero casuale da 1 a maxVal
 function getRandomNum(maxVal) {
   const n = Math.round(Math.random() * (maxVal - 1)) + 1;
   return n;
 }
 
+// funzione che controlla se un array e contenuto in una lista di array
 function arrayIncludes(arrOfArr, arr) {
   for (const arr1 of arrOfArr) {
     if (arr1.every((val, index) => val === arr[index])) return true;
@@ -297,6 +323,7 @@ function arrayIncludes(arrOfArr, arr) {
   return false;
 }
 
+// calcola il punteggio sulla base della difficoltá di gioco
 function getScoreString() {
   const x = Number(rank.value) + 1;
   return String(ListBoxClicked.length * x * x).padStart(2, "0");
